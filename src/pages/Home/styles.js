@@ -31,15 +31,13 @@ export const Container = styled.div`
     background: var(--gradients-200, linear-gradient(180deg, #091E26 0%, #00131C 100%));
     padding: 3.4rem 2.1rem 2.2rem 15.3rem;
     height: 12.0rem;
-    width:90%;
+  
     position:absolute;
     margin-left:3.6rem;
     margin-right:1.6rem;
   }
 
-
-
-   @media (min-width: 500px){
+    @media (min-width: 500px){
     position: relative;
 
     .mobile{
@@ -55,9 +53,11 @@ export const Container = styled.div`
       position: relative;
     }
 
-    .home{
-    padding: 0 12.3rem;
+    .contentHome{
+      padding-left: 12.3rem;
+      padding-right: 12.3rem;
     }
+
 
     .gradient{
       margin: 26.8rem 12.3rem;
@@ -75,8 +75,9 @@ export const Container = styled.div`
       
     }
 
-    .home{
-    padding: 0 12.3rem;
+    .contentHome{
+      padding-left: 12.3rem;
+      padding-right: 12.3rem;
     }
 
     .mobile{
@@ -93,10 +94,9 @@ export const Container = styled.div`
   
   `
 export const Content = styled.div`
-  padding-left: 2.4rem;
+
   
-  > div{
-    
+  .contentHome > .listaProdutos{
     overflow-y: auto;
     display:flex;
     flex-wrap: nowrap;
@@ -108,7 +108,8 @@ export const Content = styled.div`
 export const Advertisement = styled.div`
   display: flex;
   position:relative;
-
+  padding-left: 2.4rem;
+  
   > div{
     padding-top:6.5rem;
     width:100%;

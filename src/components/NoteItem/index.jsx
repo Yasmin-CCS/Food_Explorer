@@ -9,6 +9,7 @@ export function NoteItem({ isNew, value, onClick, ...rest }) {
         type="text"
         value={value}
         readOnly={!isNew}
+        size={6}
         {...rest}
       />
 

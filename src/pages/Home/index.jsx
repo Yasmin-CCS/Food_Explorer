@@ -7,8 +7,9 @@ import { Header } from '../../components/header';
 import { Section } from '../../components/section';
 import { ButtonText } from '../../components/ButtonText';
 import { Container, Content, Advertisement } from './styles';
-import macaronmob from '../../assets/macaronmob.png'
-import macarondesk from '../../assets/macarondesk.png'
+import macaronmob from '../../assets/macaronmob.png';
+import macarondesk from '../../assets/macarondesk.png';
+import { Footer } from '../../components/footer';
 
 
 export function Home() {
@@ -75,9 +76,10 @@ export function Home() {
         </div>
 
         <Content>
+          <div className='contentHome'>
           <Section title="Refeições">
           </Section>
-          <div>
+          <div className="listaProdutos">
             {
               notes.map(note => (
                 <Note
@@ -91,7 +93,7 @@ export function Home() {
 
           <Section title="Pratos Principais">
           </Section>
-          <div>
+          <div className="listaProdutos">
             {
               notes.map(note => (
                 <Note
@@ -105,7 +107,7 @@ export function Home() {
 
           <Section title="Sobremesas">
           </Section>
-          <div>
+          <div className="listaProdutos">
             {
               notes.map(note => (
                 <Note
@@ -119,7 +121,7 @@ export function Home() {
 
           <Section title="Bebidas">
           </Section>
-          <div>
+          <div className="listaProdutos">
             {
               notes.map(note => (
                 <Note
@@ -130,7 +132,8 @@ export function Home() {
               ))
             }
           </div>
-
+          </div>
+          <Footer/>
         </Content>
       </div>
 

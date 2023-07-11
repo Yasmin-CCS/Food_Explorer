@@ -1,9 +1,9 @@
 import { useState } from 'react';
-
+import { Footer } from '../../components/footer';
+import { SlArrowLeft } from "react-icons/sl";
 
 import { Textarea } from '../../components/Textarea';
 import { NoteItem } from '../../components/NoteItem';
-import { Section } from '../../components/Section';
 import { Header } from '../../components/header';
 import { Button } from '../../components/button';
 import { Input } from '../../components/input';
@@ -11,6 +11,9 @@ import { useNavigate } from 'react-router-dom';
 import { Container, Form } from './styles';
 import { api } from '../../service/api';
 import { ButtonText } from '../../components/ButtonText';
+import { InputFile } from '../../components/inputfile';
+import { InputList } from '../../components/inputlist';
+
 
 
 export function New() {
@@ -29,6 +32,7 @@ export function New() {
     setLinks(prevState => [...prevState, newLink]);
     setNewLink("");
   }
+
 
   function handleBack() {
     navigate(-1);
@@ -78,66 +82,99 @@ export function New() {
       <main>
         <Form>
           <header>
-            <h1>Criar Nota</h1>
             <ButtonText
-              title="Voltar"
+              title='voltar'
               onClick={handleBack}
+              icon={SlArrowLeft}
+              className="voltar"
             />
+            <h1>Novo Prato</h1>
           </header>
 
-          <Input
-            placeholder="Título"
-            onChange={e => setTitle(e.target.value)}
-          />
-
-          <Textarea
-            placeholder="Observações"
-            onChange={e => setDescription(e.target.value)}
-          />
-          <Section title="Links úteis">
-            {
-              links.map((link, index) => (
-                <NoteItem
-                  key={String(index)}
-                  value={link}
-                  onClick={() => handleRemoveLink(link)}
-                />
-              ))
-            }
-            <NoteItem
-              isNew
-              placeholder="Novo Link"
-              value={newLink}
-              onChange={e => setNewLink(e.target.value)}
-              onClick={handleAddLink}
-            />
-          </Section>
-          <Section title="Marcadores">
-            <div className='tags'>
-              {
-                tags.map((tag, index) => (
-                  <NoteItem
-                    key={String(index)}
-                    value={tag}
-                    onClick={() => handleRemoveTag(tag)}
-                  />
-                ))
-              }
-              <NoteItem
-                isNew
-                placeholder="Nova Tag"
-                onChange={e => setNewTag(e.target.value)}
-                value={newTag}
-                onClick={handleAddTag}
+          <div className="inputsForm">
+            <div className="inputLabel inputFile">
+              <label>Imagem do prato</label>
+              <InputFile
+                onChange={e => setTitle(e.target.value)}
+                className='inputsNew '
               />
             </div>
-          </Section>
-          <Button
-            title="Salvar"
-            onClick={handleNewNote}
-          />
+
+            <div className="inputLabel inputName">
+              <label>Nome</label>
+              <Input
+                placeholder="Ex.: Salada Ceasar"
+                onChange={e => setTitle(e.target.value)}
+                className='inputsNew '
+              />
+            </div>
+
+            <div className="inputLabel inputCategoria">
+              <label>Categoria</label>
+              <InputList
+                placeholder="Refeições"
+                onChange={e => setTitle(e.target.value)}
+                className='inputsNew '
+                list='categoria'
+              />
+
+              
+            </div>
+
+            <div className="inputLabel ingredientes">
+              <label>Ingredientes</label>
+              <div className="inputingrdients">
+                {
+                  tags.map((tag, index) => (
+                    <NoteItem
+                      key={String(index)}
+                      value={tag}
+                      onClick={() => handleRemoveTag(tag)}
+                      className='inputsNew'
+                    />
+                  ))
+                }
+                <NoteItem
+                  isNew
+                  placeholder="Adicionar"
+                  onChange={e => setNewTag(e.target.value)}
+                  value={newTag}
+                  onClick={handleAddTag}
+                  className='inputsNew'
+                />
+              </div>
+            </div>
+
+            <div className="inputLabel .second-row preco">
+              <label>Preço</label>
+              <Input
+                placeholder="R$ 00,00"
+                onChange={e => setTitle(e.target.value)}
+                className='inputsNew'
+              />
+            </div>
+
+            <div className="inputLabel descricao">
+              <label>Descrição</label>
+              <Textarea
+                placeholder="Fale brevemente sobre o prato, seus ingredientes e composição"
+                onChange={e => setDescription(e.target.value)}
+                className='inputsNew '
+              />
+            </div>
+
+            </div>
+            <div className='buttonarea'>
+              <Button
+                className="button"
+                title="Salvar Alterações"
+                onClick={handleNewNote}
+              />
+            </div>
         </Form>
+        <Footer />
       </main>
+
 
     </Container>
   )

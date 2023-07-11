@@ -37,10 +37,6 @@ export const Form = styled.form`
     color: ${({ theme }) => theme.COLORS.GRAY_100};
   }
 
-  > a {
-    margin-top: 124px;
-    color: ${({ theme }) => theme.COLORS.ORANGE};
-  }
 
   .divForm {
     display: flex;
@@ -67,8 +63,7 @@ export const Form = styled.form`
     background:  ${({ theme }) => theme.COLORS.BACKGROUND_500};
     padding:6.4rem;
     border-radius: 1.6rem;
-
-  }
+    }
 
   > div > h2 {
     text-align: center;

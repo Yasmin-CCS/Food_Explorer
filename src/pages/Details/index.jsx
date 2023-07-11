@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
-import { Container, Links, Content } from "./styles";
+import { Container, Content } from "./styles";
 import { useParams, useNavigate } from 'react-router-dom';
 import { Header } from '../../components/header';
 import { Button } from '../../components/button';
 import { ButtonText } from '../../components/ButtonText';
 import { Tag } from '../../components/tag';
-import { Section } from '../../components/section';
+import { Counter } from '../../components/counter';
+import { api } from '../../service/api';
+import foto from '../../assets/foto.png';
+import { SlArrowLeft } from "react-icons/sl";
+import { PiReceiptBold } from "react-icons/pi";
+import { Footer } from '../../components/footer';
 
-import { api } from '../../service/api'
 
 export function Details() {
   const [data, setData] = useState(null);
@@ -43,38 +47,25 @@ export function Details() {
         data &&
         <main>
           <Content>
-            <ButtonText
-              title="Excluir Nota"
-              onClick={handleRemove}
-            />
+            <div className='detailsStart'>
+              <ButtonText
+                title='voltar'
+                onClick={handleBack}
+                icon={SlArrowLeft}
+                className="voltar"
+              />
+              <img src={foto} />
+            </div>
+            <div className='detailsInfo'>
+              <h1>
+                {data.title}
+              </h1>
 
-            <h1>
-              {data.title}
-            </h1>
-
-            <p>
-              {data.description}
-            </p>
-            {
-              data.links &&
-              <Section title="Link Úteis">
-                <Links>
-                  {
-                    data.links.map(link => (
-                      <li key={String(link.id)}>
-                        <a href={link.url} target="_blank">
-                          {link.url}
-                        </a>
-                      </li>
-                    ))
-                  }
-                </Links>
-              </Section>
-            }
-
-            {
-              data.tags &&
-              <Section title="Marcadores">
+              <p>
+              doloremque oposam em sa aut reprehenderit nulla omnis animi. Optio eos iste porro modi error voluptatibus id, eum consectetur?
+                {/* {data.description} */}
+              </p>
+              <div className='tags'>
                 {
                   data.tags.map(tag => (
                     <Tag
@@ -83,16 +74,26 @@ export function Details() {
                     />
                   ))
                 }
-              </Section>
-            }
-            {/* Para colocar um "Carregando no botão, coloque e tire o loading da tag" */}
-            <Button
-              title='Voltar'
-              onClick={handleBack}
-            />
+              </div>
+              <div className='buttonsDetails'>
+                <Counter />
+                <Button
+                  title='pedir ∙ R$25,00'
+                  icon={PiReceiptBold}
+                  className="buttonPedir mobile"
+                />
+                <Button
+                  title='incluir ∙ R$25,00'
+                  className="buttonPedir desktop"
+                />
+
+              </div>
+            </div>
+
           </Content>
         </main>
       }
+      <Footer/>
     </Container>
 
   )
