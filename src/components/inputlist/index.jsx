@@ -10,6 +10,12 @@ export function InputList() {
     { value: 'vanilla', label: 'Vanilla' }
   ]
 
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const handleSelectChange = (selectedOption) => {
+    setSelectedOption(selectedOption);
+  };
+
   const customStyles = ({
     control: (provided, state) => ({
       ...provided,
@@ -75,8 +81,14 @@ export function InputList() {
         options={options}
         placeholder="Selecione um item"
         className='input'
+        value={selectedOption}
+        onChange={handleSelectChange}
       />
-
+      <input
+        type="text"
+        value={selectedOption ? selectedOption.value : ''}
+        readOnly
+      />
     </Container>
   );
 }

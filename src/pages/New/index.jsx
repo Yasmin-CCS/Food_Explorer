@@ -17,61 +17,64 @@ import { InputList } from '../../components/inputlist';
 
 
 export function New() {
-  const [title, setTitle] = useState("");
+  const [nome, setNome] = useState("");
   const [description, setDescription] = useState("");
+  const [foto, setFoto] = useState("");
+  const [preco, setPreco] = useState("");
 
-  const [links, setLinks] = useState([]);
-  const [newLink, setNewLink] = useState("");
+  const [categorias, setCategorias] = useState([]);
 
-  const [tags, setTags] = useState([]);
-  const [newTag, setNewTag] = useState("");
+  const [ingredientes, setIngredientes] = useState([]);
+  const [newIngredientes, setNewIngredientes] = useState("");
 
   const navigate = useNavigate();
 
-  function handleAddLink() {
-    setLinks(prevState => [...prevState, newLink]);
-    setNewLink("");
-  }
+  function handleFotoChange(file) {
+    if (file) {
+        let fileName = file.name.slice(0, 16)
 
+        if (file.name.length > 16) {
+            const fileExtension = file.name.split('.').pop()
+            fileName += `.${fileExtension}`
+        }
+
+        setFoto(file)
+        setFotoName(fileName)
+    }
+}
 
   function handleBack() {
     navigate(-1);
   }
 
-  function handleRemoveLink(deleted) {
-    setLinks(prevState => prevState.filter(link => link !== deleted));
+  function handleAddIngrediente() {
+    setIngredientes(prevState => [...prevState, newIngredientes]);
+    setNewIngredientes("")
   }
 
-  function handleAddTag() {
-    setTags(prevState => [...prevState, newTag]);
-    setNewTag("")
+  function handleRemoveIngredientes(deleted) {
+    setIngredientes(prevState => prevState.filter(ingrediente => ingrediente !== deleted));
   }
 
-  function handleRemoveTag(deleted) {
-    setTags(prevState => prevState.filter(tag => tag !== deleted));
-  }
-
-  async function handleNewNote() {
-    if (!title) {
-      return alert("Digite o título da nota");
+  async function handleNewPrato() {
+    if (!nome) {
+      return alert("Digite o nome do prato");
     }
 
-    if (newTag) {
-      return alert("Você deixou uma tag no campo para adicionar, mas não clicou em adicionar. Clique para adicionar ou deixe o campo vazio");
+    if (newIngredientes) {
+      return alert("Você deixou um ingrediente no campo, mas não clicou em adicionar. Clique para adicionar ou deixe o campo vazio");
     }
 
-    if (newLink) {
-      return alert("Você deixou um link no campo para adicionar, mas não clicou em adicionar. Clique para adicionar ou deixe o campo vazio");
-    }
-
-    await api.post("/notes", {
-      title,
+    await api.post("/pratos", {
+      nome,
       description,
-      tags,
-      links
+      foto,
+      preco,
+      ingredientes,
+      categorias
     });
 
-    alert("Nota criada com sucesso!");
+    alert("Prato cadastrado com sucesso!");
     navigate(-1);
   }
 
@@ -95,7 +98,7 @@ export function New() {
             <div className="inputLabel inputFile">
               <label>Imagem do prato</label>
               <InputFile
-                onChange={e => setTitle(e.target.value)}
+                onChange={e => handleFotoChange(e.target.files[0])}
                 className='inputsNew '
               />
             </div>
@@ -104,7 +107,7 @@ export function New() {
               <label>Nome</label>
               <Input
                 placeholder="Ex.: Salada Ceasar"
-                onChange={e => setTitle(e.target.value)}
+                onChange={e => setNome(e.target.value)}
                 className='inputsNew '
               />
             </div>
@@ -113,7 +116,7 @@ export function New() {
               <label>Categoria</label>
               <InputList
                 placeholder="Refeições"
-                onChange={e => setTitle(e.target.value)}
+                onChange={e => setCategorias(e.target.value)}
                 className='inputsNew '
                 list='categoria'
               />
@@ -123,13 +126,13 @@ export function New() {
 
             <div className="inputLabel ingredientes">
               <label>Ingredientes</label>
-              <div className="inputingrdients">
+              <div className="inputingredients">
                 {
-                  tags.map((tag, index) => (
+                  ingredientes.map((ingrediente, index) => (
                     <NoteItem
                       key={String(index)}
-                      value={tag}
-                      onClick={() => handleRemoveTag(tag)}
+                      value={ingrediente}
+                      onClick={() => handleRemoveIngredientes(ingrediente)}
                       className='inputsNew'
                     />
                   ))
@@ -137,9 +140,9 @@ export function New() {
                 <NoteItem
                   isNew
                   placeholder="Adicionar"
-                  onChange={e => setNewTag(e.target.value)}
-                  value={newTag}
-                  onClick={handleAddTag}
+                  onChange={e => setNewIngredientes(e.target.value)}
+                  value={newIngredientes}
+                  onClick={handleAddIngrediente}
                   className='inputsNew'
                 />
               </div>
@@ -149,7 +152,7 @@ export function New() {
               <label>Preço</label>
               <Input
                 placeholder="R$ 00,00"
-                onChange={e => setTitle(e.target.value)}
+                onChange={e => setPreco(e.target.value)}
                 className='inputsNew'
               />
             </div>
@@ -168,7 +171,7 @@ export function New() {
               <Button
                 className="button"
                 title="Salvar Alterações"
-                onClick={handleNewNote}
+                onClick={handleNewPrato}
               />
             </div>
         </Form>

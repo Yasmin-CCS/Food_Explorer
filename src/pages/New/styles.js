@@ -50,7 +50,7 @@ export const Form = styled.form`
 
   }
   
-.inputingrdients{
+.inputingredients{
      display: flex;
     flex-wrap:wrap;
     align-items: center;
