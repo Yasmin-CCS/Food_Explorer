@@ -5,16 +5,30 @@ export const Container = styled.header`
   height:11.4rem;
   width: 100%;
   background-color: ${({ theme }) => theme.COLORS.BACKGROUND_600};
-  justify-content:space-between;
+
   align-items:center;
   display: flex;
-  gap:3.2rem;
+  gap:8.2rem;
 
   padding: 5.6rem 2.8rem 2.4rem 2.8rem;
   
 .logoutIcon{
   display: none;
 }
+
+.admin{
+    display:flex;
+    flex-direction: column;
+    align-items:flex-end;
+    line-height:50%;
+
+    :nth-child(2){
+      color: ${({ theme }) => theme.COLORS.BLUE_200};
+      font-family: Roboto;
+      font-size: 12px;
+      line-height: 160%;
+    }
+  }
 
   .nota{
     height:32px;
@@ -49,6 +63,8 @@ export const Container = styled.header`
     height:10.4rem;
     padding: 2.4rem 2.8rem 2.4rem 2.8rem;
     justify-content:center;
+    gap:3.2rem;
+
   
   .menuIcon{
     display: none;
@@ -71,6 +87,7 @@ export const Container = styled.header`
 
     .logo{
       margin-right:1rem;
+      align-items:baseline;
     }
   
   }
@@ -107,7 +124,8 @@ export const Search = styled.div`
 
   .searchHeader{
     width: 58.1rem;
-    height: 4.8rem
+    height: 4.8rem;
+    padding: 1.2rem 11.2rem ;
   }
 
 

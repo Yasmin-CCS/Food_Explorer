@@ -6,6 +6,11 @@ export const Container = styled.div`
   align-items:center;
   padding: 0.4rem 0;
 
+  >button {
+    background:transparent;
+    border:none;
+  }
+
   .countInput {
     color: ${({ theme }) => theme.COLORS.WHITE3};
     width: 2.4rem;

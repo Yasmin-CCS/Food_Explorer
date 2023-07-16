@@ -78,7 +78,7 @@ export function Profile() {
           placeholder="Nome"
           type="text"
           icon={FiUser}
-          value={name}
+          defaultvalue={name}
           onChange = {e => setName(e.target.value)}
         />
 

@@ -53,6 +53,8 @@ line-height: 100%;
   margin-left: 16.6rem;
   position:absolute;
   align-items: start;
+  background:transparent;
+  width:24px;
 }
 
 `

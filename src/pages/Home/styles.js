@@ -97,14 +97,55 @@ export const Content = styled.div`
 
   
   .contentHome > .listaProdutos{
-    overflow-y: auto;
     display:flex;
     flex-wrap: nowrap;
     gap:1.6rem;
     margin-bottom: 2.3rem;
+    position:relative;
+    overflow-x: hidden;
+    overflow-y: hidden;
+
+  }
+
+  .note{
+    transition: all 200ms;
+    transition-timing-function: ease;
+  }
+  .note:hover {
+    transform: scale(1.1);
+
   }
 
 `
+export const Scroll = styled.button`
+    position: absolute;
+    top: 53.5%;
+    transform: translateY(-50%);
+    border: none;
+    filter: opacity(0.7);
+    height: 31rem;
+    color: ${({ theme }) => theme.COLORS.LIGHT_100};
+    font-size: 3.5rem;
+    z-index: 0.5;
+    box-shadow: 0 0 3px 3px ${({ theme }) => theme.COLORS.DARK_200};
+    background-color: ${({ theme }) => theme.COLORS.DARK_200};
+    
+
+    /* ${({ direction }) => direction === 'prev' ? `
+        left: -2rem;
+    ` : `
+        right: -2rem;
+    `} */
+
+    :hover {
+        filter: opacity(0.9);
+        transition: 0.3s;
+
+        box-shadow: 0 0 3px 3px ${({ theme }) => theme.COLORS.DARK_800};
+        background-color: ${({ theme }) => theme.COLORS.DARK_400};
+    }
+`
+
 export const Advertisement = styled.div`
   display: flex;
   position:relative;

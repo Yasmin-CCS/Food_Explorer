@@ -9,42 +9,85 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { Button } from '../button';
 import { PiReceiptBold } from "react-icons/pi";
 import { LuLogOut } from "react-icons/lu";
+import { InputSearch } from '../inputSearch';
+import { AiOutlineSearch } from "react-icons/ai";
 
 
 
-
-export function Header() {
+export function Header({onChange}) {
   const { signOut, user } = useAuth();
   const navigation = useNavigate();
-
-  const avatarUrl = user.avatar ? `${api.defaults.baseURL}/files/${user.avatar}` : avatarPlaceholder;
 
   function handleSignOut() {
     navigation("/");
     signOut();
   }
 
+  function handleNewPrato(){
+    navigation("/new");
+  }
+
+  function handleMenu(){
+    navigation("/menu");
+  }
+
+
   return (
+    <div>
+    {!user.isAdmin ?
     <Container>
-      <div>
-        <AiOutlineMenu className='menuIcon'/>
+{/* Header para não admins */}
+          <div>
+            <AiOutlineMenu className='menuIcon' onClick={handleMenu}/>
+          </div>
+
+          <div className="logo">
+            <img src={logo} />
+            <p>food explorer</p>
+          </div>
+          <Search>
+            <InputSearch
+              onChange={onChange}
+              className="searchHeader"
+              placeholder="Busque por pratos e ingredientes"
+              icon={AiOutlineSearch}
+  
+            />
+          </Search>
+
+          <Button className="pedidosbtn" title="Pedidos (0)" icon={PiReceiptBold} />
+          <LuLogOut className='logoutIcon' onClick={handleSignOut}/>
+          <PiReceiptBold className='nota' />
+          </Container>
+
+        :
+// Header para Admins
+        <Container>
+          <div>
+            <AiOutlineMenu className='menuIcon' />
+          </div>
+
+          <div className="logo">
+            <img src={logo} />
+            <div className='admin'>
+            <p>Food Explorer</p>
+            <p>admin</p>
+            </div>
+          </div>
+          <Search>
+            <Input
+              onChange={onChange}
+              className="searchHeader"
+            />
+          </Search>
+
+          <Button className="pedidosbtn" title="Novo Prato" onClick={handleNewPrato}/>
+          <LuLogOut className='logoutIcon' onClick={handleSignOut}/>
+
+      </Container>
+      }
+
       </div>
 
-      <div className="logo">
-        <img src={logo} />
-        <p>food explorer</p>
-      </div>
-      <Search>
-        <Input
-          placeholder="Pesquisar pelo título"
-          onChange={(e) => setSearch(e.target.value)}
-          className="searchHeader"
-        />
-      </Search>
-
-      <Button className="pedidosbtn" title="Pedidos (0)" icon={PiReceiptBold}/>
-      <LuLogOut className='logoutIcon'/>
-      <PiReceiptBold className='nota'/>
-    </Container>
   );
 }

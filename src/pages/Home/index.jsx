@@ -6,61 +6,96 @@ import { Note } from '../../components/note';
 import { Header } from '../../components/header';
 import { Section } from '../../components/section';
 import { ButtonText } from '../../components/ButtonText';
-import { Container, Content, Advertisement } from './styles';
+import { Container, Content, Advertisement, Scroll } from './styles';
 import macaronmob from '../../assets/macaronmob.png';
 import macarondesk from '../../assets/macarondesk.png';
 import { Footer } from '../../components/footer';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 
 
 export function Home() {
   const [search, setSearch] = useState("");
-  const [tags, setTags] = useState([]);
-  const [tagsSelected, setTagsSelected] = useState([]);
-  const [notes, setNotes] = useState([]);
+  const [pratos, setPratos] = useState([]);
+  const [categoriasId, setCategoriasId] = useState("")
+  const [nome, setNome] = useState("")
+  const [ingredientes, setIngredientes] = useState("")
+  const [termoBusca, setTermoBusca] = useState("");
 
   const navigate = useNavigate();
 
-  function handleTagSelected(tagName) {
-    if (tagName === "all") {
-      return setTagsSelected([]);
-    }
-
-    const alreadySelected = tagsSelected.includes(tagName);
-
-    if (alreadySelected) {
-      const filteredTags = tagsSelected.filter(tag => tag !== tagName);
-      setTagsSelected(filteredTags)
-    } else {
-      setTagsSelected(prevState => [...prevState, tagName]);
-    }
-  }
-
-  function handleDetails(id) {
-    navigate(`/details/${id}`);
-  }
 
   useEffect(() => {
-    async function fetchTags() {
-      const response = await api.get("/tags");
-      setTags(response.data);
-    }
-    fetchTags();
-  }, []);
+    async function buscaPratos() {
+      const response = await api.get(`/pratos`);
+      console.log(response.data)
+      if (termoBusca) {
+        const pratosFiltrados = response.data.filter(prato => {
+          const nomeMatch = prato.nome.toLowerCase().includes(termoBusca.toLowerCase());
+          const ingredientesMatch = prato.ingredientes.some(ingrediente =>
+            ingrediente.nome.toLowerCase().includes(termoBusca.toLowerCase())
+          );
+          return nomeMatch || ingredientesMatch;
+        });
 
-  useEffect(() => {
-    async function fetchNotes() {
-      const response = await api.get(`/notes?title=${search}&tags=${tagsSelected}`)
-      setNotes(response.data);
+        setPratos(pratosFiltrados);
+      } else {
+        setPratos(response.data)
+      }
     }
 
-    fetchNotes();
-  }, [tagsSelected, search])
+    buscaPratos();
+  }, [termoBusca]);
+
+  const handlePrevMealList = () => {
+    scrollMealList.current.scrollBy({
+      left: -120,
+      behavior: 'smooth'
+    });
+  }
+
+  const handleNextMealList = () => {
+    scrollMealList.current.scrollBy({
+      left: 120,
+      behavior: 'smooth'
+    });
+  }
+
+  const handlePrevDrinkList = () => {
+    scrollDrinkList.current.scrollBy({
+      left: -120,
+      behavior: 'smooth'
+    });
+  }
+
+  const handleNextDrinkList = () => {
+    scrollDrinkList.current.scrollBy({
+      left: 120,
+      behavior: 'smooth'
+    });
+  }
+
+  const handlePrevDessertList = () => {
+    scrollDessertList.current.scrollBy({
+      left: -120,
+      behavior: 'smooth'
+    });
+  }
+
+  const handleNextDessertList = () => {
+    scrollDessertList.current.scrollBy({
+      left: 120,
+      behavior: 'smooth'
+    });
+  }
 
   return (
     <Container>
 
-      <Header />
-        <div className='gradient desktop' />
+      <Header
+        onChange={(e) => setTermoBusca(e.target.value)}
+      />
+
+      <div className='gradient desktop' />
       <div className='home'>
         <div className='advertisementdiv'>
           <div className='gradient mobile' />
@@ -77,63 +112,70 @@ export function Home() {
 
         <Content>
           <div className='contentHome'>
-          <Section title="Refeições">
-          </Section>
-          <div className="listaProdutos">
-            {
-              notes.map(note => (
-                <Note
-                  key={String(note.id)}
-                  data={note}
-                  onClick={() => handleDetails(note.id)}
-                />
-              ))
-            }
-          </div>
+            <Section title="Refeições">
+            </Section>
+            <div className="listaProdutos">
+            
+              {
+                pratos.filter(prato => prato.categorias_id === 2).map(prato => (
+                  <Note
+                    key={String(prato.id)}
+                    data={prato}
+                    className="note"
+                  />
+                ))
+              }
+              <div className='scrolls'>
+              <Scroll
+              direction="prev"
+              onClick={handlePrevMealList}
+              className="left"
+            >
+              <FiChevronLeft />
+            </Scroll>
 
-          <Section title="Pratos Principais">
-          </Section>
-          <div className="listaProdutos">
-            {
-              notes.map(note => (
-                <Note
-                  key={String(note.id)}
-                  data={note}
-                  onClick={() => handleDetails(note.id)}
-                />
-              ))
-            }
-          </div>
+            <Scroll 
+              direction="next" 
+              onClick={handleNextMealList}
+              className="right"
+              >
+              <FiChevronRight />
+            </Scroll>
+            </div>
+            </div>
 
-          <Section title="Sobremesas">
-          </Section>
-          <div className="listaProdutos">
-            {
-              notes.map(note => (
-                <Note
-                  key={String(note.id)}
-                  data={note}
-                  onClick={() => handleDetails(note.id)}
-                />
-              ))
-            }
-          </div>
+            <Section title="Sobremesas">
+            </Section>
+            <div className="listaProdutos">
+              {
+                pratos.filter(prato => prato.categorias_id === 3).map(prato => (
+                  <Note
+                    key={String(prato.id)}
+                    data={prato}
+                    onClick={() => handleDetails(prato.id)}
+                    className="note"
 
-          <Section title="Bebidas">
-          </Section>
-          <div className="listaProdutos">
-            {
-              notes.map(note => (
-                <Note
-                  key={String(note.id)}
-                  data={note}
-                  onClick={() => handleDetails(note.id)}
-                />
-              ))
-            }
+                  />
+                ))
+              }
+            </div>
+
+            <Section title="Bebidas">
+            </Section>
+            <div className="listaProdutos">
+              {
+                pratos.filter(prato => prato.categorias_id === 1).map(prato => (
+                  <Note
+                    key={String(prato.id)}
+                    data={prato}
+                    onClick={() => handleDetails(prato.id)}
+                    className="note"
+                  />
+                ))
+              }
+            </div>
           </div>
-          </div>
-          <Footer/>
+          <Footer />
         </Content>
       </div>
 

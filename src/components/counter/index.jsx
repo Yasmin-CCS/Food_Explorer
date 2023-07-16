@@ -1,21 +1,35 @@
 import { Container } from './styles';
-
+import { useState, useEffect } from 'react';
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 
 export function Counter({ title, loading = false, ...rest }) {
+  const [quantidade, setQuantidade] = useState(0);
+
+  function subtracao(){
+    let resultado = quantidade - 1;
+    setQuantidade(resultado)
+  }
+
+
+  function soma(){
+    let resultado = quantidade + 1;
+    setQuantidade(resultado)
+  }
+
+
   return (
     <>
       <Container>
 
-      <div type='button'>
+      <button onClick={subtracao}>
         <AiOutlineMinus className='countBtn'/>
-      </div>
+        </button>
 
-      <div className='countInput'> 01 </div>
+      <div className='countInput'> {quantidade} </div>
 
-      <div type='button' >
-       <AiOutlinePlus className='countBtn'/> 
-      </div>
+      <button onClick={soma}>
+        <AiOutlinePlus className='countBtn' /> 
+      </button>
 
       </Container>
     </>

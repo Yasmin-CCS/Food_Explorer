@@ -5,9 +5,10 @@ import React, { useState, useContext } from 'react';
 
 export function InputList() {
   const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
+    { value: 'refeicoes', label: 'Refeição' },
+    { value: 'pratos principais', label: 'Prato Principal' },
+    { value: 'sobremesas', label: 'Sobremesas' },
+    { value: 'bebidas', label: 'Bebidas' }
   ]
 
   const [selectedOption, setSelectedOption] = useState(null);
@@ -65,9 +66,11 @@ export function InputList() {
 
     option: (provided, state) => ({
       ...provided,
-      color: state.isSelected ? 'black' : '#C4C4CC',
+      backgroundColor: state.isSelected ? 'transparent'  : 'transparent',
+      color:'#C4C4CC',
       '&:hover': {
         backgroundColor: `#E1E1E6`,
+        color :'#000000',
       },
     }),
   });
@@ -85,7 +88,7 @@ export function InputList() {
         onChange={handleSelectChange}
       />
       <input
-        type="text"
+        type="hidden"
         value={selectedOption ? selectedOption.value : ''}
         readOnly
       />

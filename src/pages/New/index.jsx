@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Footer } from '../../components/footer';
 import { SlArrowLeft } from "react-icons/sl";
+import { MdOutlineFileUpload } from "react-icons/md";
 
 import { Textarea } from '../../components/Textarea';
 import { NoteItem } from '../../components/NoteItem';
@@ -17,66 +18,73 @@ import { InputList } from '../../components/inputlist';
 
 
 export function New() {
-  const [nome, setNome] = useState("");
-  const [description, setDescription] = useState("");
-  const [foto, setFoto] = useState("");
-  const [preco, setPreco] = useState("");
 
-  const [categorias, setCategorias] = useState([]);
+  const [nome, setNome] = useState("");
+  const [categorias, setCategorias] = useState("");
+  const [preco, setPreco] = useState("");
+  const [description, setDescription] = useState("");
 
   const [ingredientes, setIngredientes] = useState([]);
-  const [newIngredientes, setNewIngredientes] = useState("");
+  const [newIngredient, setNewIngredient] = useState("");
+
+  const [image, setImage] = useState(null);
 
   const navigate = useNavigate();
 
-  function handleFotoChange(file) {
-    if (file) {
-        let fileName = file.name.slice(0, 16)
+  function handleAddIngredient() {
+    if (!newIngredient) {
+      return alert("Não é possível adicionar o campo vazio.", {
 
-        if (file.name.length > 16) {
-            const fileExtension = file.name.split('.').pop()
-            fileName += `.${fileExtension}`
-        }
-
-        setFoto(file)
-        setFotoName(fileName)
+      });
     }
-}
+    setIngredientes(prevState => [...prevState, newIngredient]);
+    setNewIngredient("");
+  }
 
-  function handleBack() {
+  function handleRemoveIngredient(deleted) {
+    setIngredientes(prevState => prevState.filter(ingredient => ingredient !== deleted))
+  }
+
+  function handleClickBack() {
     navigate(-1);
   }
 
-  function handleAddIngrediente() {
-    setIngredientes(prevState => [...prevState, newIngredientes]);
-    setNewIngredientes("")
-  }
+  async function handleAddNewDish() {
+    const formData = new FormData();
 
-  function handleRemoveIngredientes(deleted) {
-    setIngredientes(prevState => prevState.filter(ingrediente => ingrediente !== deleted));
-  }
+    if (!nome || !preco || !description || !ingredientes || !image) {
+      return alert("Preencha todos os campos para criar o prato.", {
 
-  async function handleNewPrato() {
-    if (!nome) {
-      return alert("Digite o nome do prato");
+      });
     }
 
-    if (newIngredientes) {
-      return alert("Você deixou um ingrediente no campo, mas não clicou em adicionar. Clique para adicionar ou deixe o campo vazio");
+    if (newIngredient) {
+      return alert("Você deixou o campo de ingrediente incompleto, finalize ou apague o conteúdo para adicionar o ingrediente.", {
+
+      });
     }
 
-    await api.post("/pratos", {
-      nome,
-      description,
-      foto,
-      preco,
-      ingredientes,
-      categorias
-    });
+    formData.append("nome", nome);
+    formData.append("categorias", categorias);
+    formData.append("preco", preco);
+    formData.append("ingredientes", ingredientes);
+    formData.append("description", description);
+    formData.append("foto", image);
+   
 
-    alert("Prato cadastrado com sucesso!");
-    navigate(-1);
-  }
+    try {
+
+      await api.post("/pratos", formData);
+
+      alert("Prato criado com sucesso!");
+      navigate(-1);
+
+    } catch (error) {
+      alert("Não foi possível criar o prato.", {
+      });
+    }
+    }
+  
 
   return (
     <Container>
@@ -87,7 +95,7 @@ export function New() {
           <header>
             <ButtonText
               title='voltar'
-              onClick={handleBack}
+              onClick={handleClickBack}
               icon={SlArrowLeft}
               className="voltar"
             />
@@ -97,10 +105,13 @@ export function New() {
           <div className="inputsForm">
             <div className="inputLabel inputFile">
               <label>Imagem do prato</label>
-              <InputFile
-                onChange={e => handleFotoChange(e.target.files[0])}
-                className='inputsNew '
-              />
+              <input
+                type="file"
+                onChange={e => setImage(e.target.files[0])}/*{ onChange={handleFileChange}*/ />
+              <label>
+                <MdOutlineFileUpload className="icon" />
+                Selecione Imagem
+              </label>
             </div>
 
             <div className="inputLabel inputName">
@@ -114,25 +125,28 @@ export function New() {
 
             <div className="inputLabel inputCategoria">
               <label>Categoria</label>
-              <InputList
-                placeholder="Refeições"
+              <select
+                id="category"
                 onChange={e => setCategorias(e.target.value)}
-                className='inputsNew '
-                list='categoria'
-              />
+              >
+                <option value="undefined">Selecione a Categoria</option>
+                <option value="Refeicoes">Refeições</option>
+                <option value="Bebidas">Bebidas</option>
+                <option value="Sobremesas">Sobremesas</option>
+              </select>
 
-              
+
             </div>
 
             <div className="inputLabel ingredientes">
               <label>Ingredientes</label>
               <div className="inputingredients">
                 {
-                  ingredientes.map((ingrediente, index) => (
+                  ingredientes.map((ingredient, index) => (
                     <NoteItem
-                      key={String(index)}
-                      value={ingrediente}
-                      onClick={() => handleRemoveIngredientes(ingrediente)}
+                      value={String(ingredient)}
+                      key={index}
+                      onClick={() => handleRemoveIngredient(ingredient)}
                       className='inputsNew'
                     />
                   ))
@@ -140,9 +154,9 @@ export function New() {
                 <NoteItem
                   isNew
                   placeholder="Adicionar"
-                  onChange={e => setNewIngredientes(e.target.value)}
-                  value={newIngredientes}
-                  onClick={handleAddIngrediente}
+                  onChange={e => setNewIngredient(e.target.value)}
+                  value={newIngredient}
+                  onClick={handleAddIngredient}
                   className='inputsNew'
                 />
               </div>
@@ -166,14 +180,14 @@ export function New() {
               />
             </div>
 
-            </div>
-            <div className='buttonarea'>
-              <Button
-                className="button"
-                title="Salvar Alterações"
-                onClick={handleNewPrato}
-              />
-            </div>
+          </div>
+          <div className='buttonarea'>
+            <Button
+              className="button"
+              title="Salvar Alterações"
+              onClick={handleAddNewDish}
+            />
+          </div>
         </Form>
         <Footer />
       </main>
