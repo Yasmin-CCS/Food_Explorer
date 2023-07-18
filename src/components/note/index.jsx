@@ -21,6 +21,10 @@ export function Note({ data, ...rest }) {
     navigate(`/edit/${data.id}`);
   }
 
+  function handleDetails(id){
+    navigate(`/details/${data.id}`);
+  }
+
   return (
     <div>
       {!user.isAdmin ?
@@ -32,10 +36,14 @@ export function Note({ data, ...rest }) {
 
             <div className="cardInfo" >
               <h1 component="p" className='tituloprodlista' onClick={() => handleDetails(data.id)} >
-                {data.nome}
+                {data.nome} &gt;
               </h1>
 
-              <p component="p" className='valorprodlista' onClick={() => handleDetails(data.id)} >
+              <p component="p" className='description' onClick={() => handleDetails(data.id)} >
+                {data.description}
+              </p>
+
+              <p component="p" className='valornota' onClick={() => handleDetails(data.id)} >
                 R$ {data.preco}
               </p>
 
@@ -54,10 +62,14 @@ export function Note({ data, ...rest }) {
 
             <div className="cardInfo" >
               <h1 component="p" className='tituloprodlista' onClick={() => handleDetails(data.id)} >
-                {data.nome}
+                {data.nome} &gt;
               </h1>
 
-              <p component="p" className='valorprodlista' onClick={() => handleDetails(data.id)} >
+              <p component="p" className='description' onClick={() => handleDetails(data.id)} >
+                {data.description}
+              </p>
+
+              <p component="p" className='valornota' onClick={() => handleDetails(data.id)} >
                 R$ {data.preco}
               </p>
 

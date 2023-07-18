@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Footer } from '../../components/footer';
 import { SlArrowLeft } from "react-icons/sl";
 import { MdOutlineFileUpload } from "react-icons/md";
@@ -30,6 +30,21 @@ export function New() {
   const [image, setImage] = useState(null);
 
   const navigate = useNavigate();
+
+  const [inputValue, setInputValue] = useState('');
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+
+  useEffect(() => {
+    function handleInputChange () {
+
+    if (nome == '' || preco == '' || description == '' || categorias == 'undefined') {
+      setButtonDisabled(true);
+    } else {
+      setButtonDisabled(false);
+    }
+  };
+  handleInputChange();
+}, [nome, description, preco, categorias]);
 
   function handleAddIngredient() {
     if (!newIngredient) {
@@ -186,6 +201,7 @@ export function New() {
               className="button"
               title="Salvar Alterações"
               onClick={handleAddNewDish}
+              disabled={buttonDisabled}
             />
           </div>
         </Form>

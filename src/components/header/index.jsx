@@ -14,21 +14,17 @@ import { AiOutlineSearch } from "react-icons/ai";
 
 
 
-export function Header({onChange}) {
+export function Header({onChange, onClick}) {
   const { signOut, user } = useAuth();
-  const navigation = useNavigate();
+  const navigate = useNavigate();
 
   function handleSignOut() {
-    navigation("/");
+    navigate("/");
     signOut();
   }
 
   function handleNewPrato(){
-    navigation("/new");
-  }
-
-  function handleMenu(){
-    navigation("/menu");
+    navigate("/new");
   }
 
 
@@ -38,7 +34,7 @@ export function Header({onChange}) {
     <Container>
 {/* Header para não admins */}
           <div>
-            <AiOutlineMenu className='menuIcon' onClick={handleMenu}/>
+            <AiOutlineMenu className='menuIcon' onClick={onClick}/>
           </div>
 
           <div className="logo">
@@ -64,7 +60,7 @@ export function Header({onChange}) {
 // Header para Admins
         <Container>
           <div>
-            <AiOutlineMenu className='menuIcon' />
+            <AiOutlineMenu className='menuIcon' onClick={onClick}/>
           </div>
 
           <div className="logo">

@@ -1,10 +1,24 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+export const ContainerHomeMenu = styled.div`
+.hide {
+  display:none;
+}
+
+.grid {
+  display: grid;
+}
+.flex {
+  display: flex;
+}
+`
+
+
 export const Container = styled.div`
   width: 100%;
   height: 100vh;
-  display: flex;
+
   flex-direction: column;
 
   background-color: ${({ theme }) => theme.COLORS.BACKGROUND_800};
@@ -31,7 +45,7 @@ export const Container = styled.div`
     background: var(--gradients-200, linear-gradient(180deg, #091E26 0%, #00131C 100%));
     padding: 3.4rem 2.1rem 2.2rem 15.3rem;
     height: 12.0rem;
-  
+    width:37.6rem;
     position:absolute;
     margin-left:3.6rem;
     margin-right:1.6rem;
@@ -95,56 +109,71 @@ export const Container = styled.div`
   `
 export const Content = styled.div`
 
-  
-  .contentHome > .listaProdutos{
+  .contentHome{
+    padding-left:12.4rem;
+
+    > .listaProdutos{
     display:flex;
     flex-wrap: nowrap;
     gap:1.6rem;
     margin-bottom: 2.3rem;
-    position:relative;
-    overflow-x: hidden;
-    overflow-y: hidden;
 
+    overflow-x: scroll;
+    overflow-y: hidden;
+    margin-left:10px;
+  }
   }
 
-  .note{
+
+  .section{
+    position:relative;
+  }
+
+  .right {
+      background: linear-gradient(90deg, rgba(248,248,248,0) 0%, rgba(0,10,15,1) 100%);
+      left: calc(100vw - 15.3rem);
+    }
+
+  .left{
+    background: linear-gradient(90deg, rgba(0,10,15,1) 0%, rgba(248,248,248,0) 100%);
+  }
+
+
+  
+
+  @media (min-width: 500px) {
+
+    .note{
+
+    width: 20.4rem;
     transition: all 200ms;
     transition-timing-function: ease;
   }
+
   .note:hover {
     transform: scale(1.1);
 
+
+    .contentHome{
+      padding: 0rem 12.3rem;
+    }
+
+    
+  }
   }
 
 `
 export const Scroll = styled.button`
+display:flex;
+    height:26.2rem;
     position: absolute;
-    top: 53.5%;
-    transform: translateY(-50%);
-    border: none;
-    filter: opacity(0.7);
-    height: 31rem;
-    color: ${({ theme }) => theme.COLORS.LIGHT_100};
-    font-size: 3.5rem;
-    z-index: 0.5;
-    box-shadow: 0 0 3px 3px ${({ theme }) => theme.COLORS.DARK_200};
-    background-color: ${({ theme }) => theme.COLORS.DARK_200};
-    
-
-    /* ${({ direction }) => direction === 'prev' ? `
-        left: -2rem;
-    ` : `
-        right: -2rem;
-    `} */
-
-    :hover {
-        filter: opacity(0.9);
-        transition: 0.3s;
-
-        box-shadow: 0 0 3px 3px ${({ theme }) => theme.COLORS.DARK_800};
-        background-color: ${({ theme }) => theme.COLORS.DARK_400};
-    }
+    z-index:1;
+    align-items: center;
+    color:white;
+    border:none;
+    width: 4.5rem;
 `
+
 
 export const Advertisement = styled.div`
   display: flex;
@@ -160,13 +189,13 @@ export const Advertisement = styled.div`
   }
   
   > div > h2{
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight:600;
     line-height: 140%;
   }
   
   > div > h3 {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight:400;
     line-height: 140%;
   };
@@ -212,6 +241,79 @@ export const Advertisement = styled.div`
     }
   }
 
+
+`
+
+export const Menu = styled.div`
+  width:100%;
+  height: 100vh;
+  display:grid;
+  grid-template-rows: 15vh 85vh auto; 
+
+
+
+  .menuSection{
+    display:flex;
+    align-items:flex-start;
+    width: 100%;
+    font-family: Poppins;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 140%;
+    color: ${({ theme }) => theme.COLORS.WHITE3} ;
+    border: none;
+    background:transparent;
+    border-bottom: 1px solid ${({ theme }) => theme.COLORS.BACKGROUND_1000};
+    padding:1rem;
+  }
+`
+
+export const FooterContainer = styled.div`
+ grid-row: 3;
+ margin-bottom:0px;
+`
+
+export const HeaderMenu = styled.div`
+  grid-row: 1;
+  background-color: ${({ theme }) => theme.COLORS.BACKGROUND_500};
+  display:flex;
+  align-items: flex-end;
+
+  .contentHeader{
+  display:flex;
+  color: ${({ theme }) => theme.COLORS.WHITE};
+  font-family: Roboto;
+  font-size: 21.163px;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 3.2rem;
+  margin-left: 2.8rem;
+  gap: 1.6rem;
+}
+
+`
+export const MenuContent = styled.div`
+  grid-row: 2;
+  display: grid;
+  background-color: ${({ theme }) => theme.COLORS.BACKGROUND_800};
+
+  .menuContent{
+    grid-row: 1;
+    padding: 3.6rem 2.8rem 1.3rem;
+  }
+`
+
+export const Search = styled.div`
+  grid-area: search;
+  display: flex;
+  margin-bottom: 3.6rem;
+  
+  .searchHeader{
+    width: 100%;
+    height: 4.8rem;
+
+  }
 
 `
 

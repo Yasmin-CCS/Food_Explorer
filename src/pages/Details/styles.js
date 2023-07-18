@@ -34,6 +34,7 @@ export const Content = styled.div`
   flex-direction: column;
   text-align:center;
   align-items:center;
+  
 
   .detailsInfo > .buttonsDetails > .desktop{
     display	: none;
@@ -77,8 +78,15 @@ export const Content = styled.div`
       display:flex;
       justify-content:center;
       align-items:flex-end;
+
+      .buttonEdit{
       gap:1.6rem;
       width:100%;
+      font-family: Poppins;
+      font-size: 1.4rem;
+      font-weight: 500;
+      padding:1.8rem;
+      }
 
       .buttonPedir {
         margin-top:0;
@@ -93,6 +101,7 @@ export const Content = styled.div`
     }
     .detailsInfo .tags{
         display:flex;
+        flex-wrap:wrap;
         gap: 2.4rem;
         justify-content:center;
         margin-bottom:4.8rem;
@@ -142,7 +151,7 @@ export const Content = styled.div`
         margin-bottom:4.8rem;
       }
 
-      .detailsInfo > .buttonsDetails >.buttonPedir {
+      .detailsInfo > .buttonsDetails >.buttonPedir, .detailsInfo > .buttonsDetails >.buttonEdit{
         font-size: 1.4rem;
         padding: 1.2rem 2.4rem;
         font-weight: 500;
@@ -151,5 +160,7 @@ export const Content = styled.div`
         justify-content:center;
         width:16.5rem;
       }
+
+
     }
 `;

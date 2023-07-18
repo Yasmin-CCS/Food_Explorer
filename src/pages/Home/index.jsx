@@ -6,11 +6,17 @@ import { Note } from '../../components/note';
 import { Header } from '../../components/header';
 import { Section } from '../../components/section';
 import { ButtonText } from '../../components/ButtonText';
-import { Container, Content, Advertisement, Scroll } from './styles';
+import { Container, Content, Advertisement, Scroll, Menu, MenuContent, FooterContainer, HeaderMenu, ContainerHomeMenu, Search } from './styles';
 import macaronmob from '../../assets/macaronmob.png';
 import macarondesk from '../../assets/macarondesk.png';
 import { Footer } from '../../components/footer';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
+import React, { useRef } from 'react';
+import { useAuth } from '../../hooks/auth';
+import { TfiClose } from "react-icons/tfi";
+import { Input } from '../../components/input';
+import { AiOutlineSearch } from "react-icons/ai";
+
 
 
 export function Home() {
@@ -21,8 +27,29 @@ export function Home() {
   const [ingredientes, setIngredientes] = useState("")
   const [termoBusca, setTermoBusca] = useState("");
 
+  const containerRefRef = useRef(null);
+  const containerRefSob = useRef(null);
+  const containerRefBeb = useRef(null);
+  const { signOut, user } = useAuth();
+
   const navigate = useNavigate();
 
+  function handleNewPrato(){
+    navigate("/new");
+  }
+
+  
+
+  const [mostrarMenu, setMostrarMenu] = useState(false);
+
+  const toggleMenu = () => {
+    setMostrarMenu(!mostrarMenu);
+  };
+
+  function handleSignOut() {
+    navigate("/");
+    signOut();
+  }
 
   useEffect(() => {
     async function buscaPratos() {
@@ -46,54 +73,140 @@ export function Home() {
     buscaPratos();
   }, [termoBusca]);
 
-  const handlePrevMealList = () => {
-    scrollMealList.current.scrollBy({
-      left: -120,
-      behavior: 'smooth'
-    });
+  function handleDetails(id){
+    navigate(`/details/${id}`);
   }
 
-  const handleNextMealList = () => {
-    scrollMealList.current.scrollBy({
-      left: 120,
-      behavior: 'smooth'
-    });
-  }
+  const scrollToLeftRef = () => {
+      if (containerRefRef.current) {
+        containerRefRef.current.scrollLeft -= 100;// Valor de deslocamento horizontal
+      }
+  };
 
-  const handlePrevDrinkList = () => {
-    scrollDrinkList.current.scrollBy({
-      left: -120,
-      behavior: 'smooth'
-    });
-  }
+  const scrollToRightRef = () => {
+      if (containerRefRef.current) {
+        containerRefRef.current.scrollLeft += 100; // Valor de deslocamento horizontal
+    
+      }
+  };
 
-  const handleNextDrinkList = () => {
-    scrollDrinkList.current.scrollBy({
-      left: 120,
-      behavior: 'smooth'
-    });
-  }
+  const scrollToLeftSob = () => {
+    if (containerRefSob.current) {
+      containerRefSob.current.scrollLeft -= 100;// Valor de deslocamento horizontal
+    }
+  };
 
-  const handlePrevDessertList = () => {
-    scrollDessertList.current.scrollBy({
-      left: -120,
-      behavior: 'smooth'
-    });
-  }
+  const scrollToRightSob = () => {
+    if (containerRefSob.current) {
+      containerRefSob.current.scrollLeft += 100; // Valor de deslocamento horizontal
+   }
+  };
 
-  const handleNextDessertList = () => {
-    scrollDessertList.current.scrollBy({
-      left: 120,
-      behavior: 'smooth'
-    });
-  }
+  const scrollToLeftBeb = () => {
+    if (containerRefBeb.current) {
+      containerRefBeb.current.scrollLeft -= 100;// Valor de deslocamento horizontal
+    }
+  };
+
+  const scrollToRightBeb = () => {
+    if (containerRefBeb.current) {
+      containerRefBeb.current.scrollLeft += 100; // Valor de deslocamento horizontal
+    }
+  };
+  
 
   return (
-    <Container>
+    <ContainerHomeMenu>
+    {!user.isAdmin ? 
+      
+      <Menu className={`${mostrarMenu ? 'grid' : 'hide'}`}>
+        <HeaderMenu>
+          <div className="contentHeader">
+            <TfiClose onClick={toggleMenu}/>
+            
+            <p>
+              Menu
+            </p>
+          </div>
+        </HeaderMenu>
+
+        <MenuContent>
+          <div className='menuContent'>
+            <Search>
+              <Input
+                placeholder="Pesquisar pelo título"
+                // onChange={(e) => setSearch(e.target.value)}
+                className="searchHeader"
+                icon={AiOutlineSearch}
+                onChange={(e) => setTermoBusca(e.target.value)}
+              />
+            </Search>
+
+            <button className="menuSection">
+              Sair
+            </button>
+          </div>
+
+
+
+        </MenuContent>
+
+        <FooterContainer>
+          <Footer />
+        </FooterContainer>
+
+      </Menu>
+      :
+      <Menu  className={`${mostrarMenu ? 'grid' : 'hide'}`}>
+        <HeaderMenu>
+          <div className="contentHeader">
+            <TfiClose onClick={toggleMenu}/>
+            
+            <p>
+              Menu
+            </p>
+          </div>
+        </HeaderMenu>
+
+        <MenuContent>
+          <div className='menuContent'>
+            <Search>
+              <Input
+                placeholder="Pesquisar pelo título"
+                // onChange={(e) => setSearch(e.target.value)}
+                className="searchHeader"
+                icon={AiOutlineSearch}
+                onChange={(e) => setTermoBusca(e.target.value)}
+              />
+            </Search>
+            <button className="menuSection" onClick={handleNewPrato}>
+              Novo Prato
+            </button>
+            <button className="menuSection" onClick={handleSignOut}>
+              Sair
+            </button>
+          </div>
+
+
+
+        </MenuContent>
+
+        <FooterContainer>
+          <Footer />
+        </FooterContainer>
+
+      </Menu>
+    }
+
+
+    <Container className= {`${mostrarMenu ? 'hide' : 'flex' }`}>
 
       <Header
         onChange={(e) => setTermoBusca(e.target.value)}
-      />
+        onClick={toggleMenu}
+        >
+        
+        </Header>
 
       <div className='gradient desktop' />
       <div className='home'>
@@ -112,10 +225,27 @@ export function Home() {
 
         <Content>
           <div className='contentHome'>
-            <Section title="Refeições">
+            <Section title="Refeições" className="section">
+              <Scroll
+                direction="prev"
+                onClick={scrollToLeftRef}
+                className="left desktop"
+
+              >
+                <FiChevronLeft size={25} />
+              </Scroll>
+
+              <Scroll
+                direction="next"
+                onClick={scrollToRightRef}
+                className="right desktop"
+              >
+                <FiChevronRight size={25} />
+              </Scroll>
             </Section>
-            <div className="listaProdutos">
-            
+            <div className="listaProdutos" ref={containerRefRef}>
+
+
               {
                 pratos.filter(prato => prato.categorias_id === 2).map(prato => (
                   <Note
@@ -125,61 +255,79 @@ export function Home() {
                   />
                 ))
               }
-              <div className='scrolls'>
-              <Scroll
-              direction="prev"
-              onClick={handlePrevMealList}
-              className="left"
-            >
-              <FiChevronLeft />
-            </Scroll>
 
-            <Scroll 
-              direction="next" 
-              onClick={handleNextMealList}
-              className="right"
-              >
-              <FiChevronRight />
-            </Scroll>
+
+
+
             </div>
-            </div>
+
 
             <Section title="Sobremesas">
-            </Section>
-            <div className="listaProdutos">
-              {
-                pratos.filter(prato => prato.categorias_id === 3).map(prato => (
-                  <Note
-                    key={String(prato.id)}
-                    data={prato}
-                    onClick={() => handleDetails(prato.id)}
-                    className="note"
+              <Scroll
+                direction="prev"
+                onClick={scrollToLeftSob}
+                className="left desktop"
 
-                  />
-                ))
-              }
-            </div>
+              >
+                <FiChevronLeft size={25} />
+              </Scroll>
 
-            <Section title="Bebidas">
+              <Scroll
+                direction="next"
+                onClick={scrollToRightSob}
+                className="right desktop"
+              >
+                <FiChevronRight size={25} />
+              </Scroll>
             </Section>
-            <div className="listaProdutos">
-              {
-                pratos.filter(prato => prato.categorias_id === 1).map(prato => (
-                  <Note
-                    key={String(prato.id)}
-                    data={prato}
-                    onClick={() => handleDetails(prato.id)}
-                    className="note"
-                  />
-                ))
-              }
-            </div>
+          <div className="listaProdutos" ref={containerRefSob}>
+            {
+              pratos.filter(prato => prato.categorias_id === 3).map(prato => (
+                <Note
+                  key={String(prato.id)}
+                  data={prato}
+                  className="note"
+
+                />
+              ))
+            }
           </div>
-          <Footer />
-        </Content>
+
+          <Section title="Bebidas">
+            <Scroll
+              direction="prev"
+              onClick={scrollToLeftBeb}
+              className="left desktop"
+
+            >
+              <FiChevronLeft size={25} />
+            </Scroll>
+
+            <Scroll
+              direction="next"
+              onClick={scrollToRightBeb}
+              className="right desktop"
+            >
+              <FiChevronRight size={25} />
+            </Scroll>
+        </Section>
+        <div className="listaProdutos" ref={containerRefBeb}>
+          {
+            pratos.filter(prato => prato.categorias_id === 1).map(prato => (
+              <Note
+                key={String(prato.id)}
+                data={prato}
+                className="note"
+              />
+            ))
+          }
+        </div>
       </div>
+      <Footer />
+    </Content>
+      </div >
 
-    </Container>
-
+    </Container >
+    </ContainerHomeMenu>
   );
 }

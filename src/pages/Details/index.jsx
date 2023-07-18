@@ -38,14 +38,14 @@ export function Details() {
     navigate(-1);
   }
 
-  async function handleRemove() {
-    const confirm = window.confirm("Deseja realmente remover a nota?")
+  // async function handleRemove() {
+  //   const confirm = window.confirm("Deseja realmente remover a nota?")
 
-    if (confirm) {
-      await api.delete(`/notes/${params.id}`);
-      handleBack();
-    }
-  }
+  //   if (confirm) {
+  //     await api.delete(`/notes/${params.id}`);
+  //     handleBack();
+  //   }
+  // }
 
   useEffect(() => {
     async function fetchPratos() {
@@ -97,7 +97,7 @@ export function Details() {
                   <div className='buttonsDetails'>
                     <Button
                       title='Editar prato'
-                      className="buttonPedir desktop"
+                      className="buttonEdit"
                       onClick={handleEdit}
                     />
 
@@ -110,7 +110,7 @@ export function Details() {
           <Footer />
         </Container>
         :
-        /* Detalhes para admins */
+     
         <Container>
           <Header />
           {
